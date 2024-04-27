@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Usuarios</title>
+
+	<!-- Custom fonts for this template-->
+	<link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+	<!-- Bootstrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+	<!-- Custom styles for this page -->
+	<link th:href="@{vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+
+
+
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Sidebar -->
+		<div th:insert="~{fragments/sidebar :: sidebar}"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<div th:replace="~{fragments/topbar::topbar}"></div>
+
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Usuarios</h1>
+
+
+					<!-- TABLA -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">Lista de usuarios registrados</h6>
+						</div>
+
+
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+									<thead>
+										<th>Username</th>
+										<th>Habilitado</th>
+										<th>Creado</th>
+										<th>Actualizado</th>
+										<th>Roles</th>
+										<th>Editar</th>
+									</thead>
+
+
+									<tbody>
+										<tr th:each="user : ${users}">
+											<td th:text="${#strings.capitalize(user.username)}"></td>
+											<td th:text="${user.isEnabled() ? 'Activo' : 'Inactivo'}"></td>
+											<td th:text="${#temporals.format(user.getCreatedAt())}"></td>
+											<td th:text="${#temporals.format(user.getUpdatedAt())}"></td>
+											<td class="text-center">
+
+												<!--Se le asigna el valor al boton del UserId para ser utilizado luego con Ajax -->
+												<button class="btn btn-primary center" data-toggle="modal"
+													data-target="#userModal" th:attr="data-user-id=${user.id}">Ver
+													roles</button>
+											</td>
+
+											<td class="text-center">
+												<a class="btn btn-primary center" th:href="@{/usuarios/editar/{id}(id=${user.id})}">
+													<i class="bi bi-pencil-square"></i> Editar
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+
+				<!-- User Modal con los datos de los roles asignados -->
+				<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="userModalLabel">Roles del Usuario</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<div th:replace="~{fragments/footer :: footer}"></div>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Logout Modal-->
+	<div th:replace="~{fragments/logout-modal::logout-modal}"></div>
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Evento que se activa cuando el modal se va a mostrar
+			$('#userModal').on('show.bs.modal', function (event) {
+				// Obtiene el botón que activó el modal
+				var button = $(event.relatedTarget);
+
+				// Obtiene el ID del usuario desde el atributo `data-user-id`
+				var userId = button.data('user-id');
+				console.log(userId);
+				// Realiza una llamada AJAX para obtener detalles del usuario por su ID
+				$.ajax({
+					url: 'api/v1/usuarios/detalles', // URL del endpoint para obtener datos del usuario
+					method: 'GET', // Método de la solicitud
+					data: {id: userId}, // Pasa el ID del usuario como parámetro
+					success: function (data) {
+						// Referencia al modal para modificar su contenido
+						var modal = $('#userModal');
+
+						// Cambia el título del modal según el nombre del usuario
+						modal.find('.modal-title').text('Roles del usuario: ' + data.username);
+						console.log(data);
+						// Actualiza el contenido del modal con los datos obtenidos
+						modal.find('.modal-body').html(`
+	                        <p>Roles: ${data.userRoles.map(rol => (rol.role))}</p> <!-- Convierte los roles a una cadena -->
+	                    `);
+					},
+					error: function (xhr, status, error) {
+						console.error('Error al obtener los detalles del usuario:', error); // Log para depurar
+						alert('Hubo un error al cargar los detalles del usuario.'); // Alerta para el usuario
+					}
+				});
+			});
+		});
+	</script>
+
+
+
+</body>
+
+</html>
