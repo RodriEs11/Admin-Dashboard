@@ -1,4 +1,6 @@
 spring:
+  mvc:
+    static-path-pattern: /resources
   datasource:
     url: jdbc:mysql://localhost:3306/grupo-12-oo2
     username: root
