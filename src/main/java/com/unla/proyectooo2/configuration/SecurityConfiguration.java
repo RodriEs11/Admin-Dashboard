@@ -34,11 +34,9 @@ public class SecurityConfiguration {
 
 		http.authorizeHttpRequests(requests -> requests.requestMatchers(
 				"/css/*",
-				"/imgs/*",
+				"/img/*",
 				"/js/*",
-				"/vendor/bootstrap/css/*",
-				"/vendor/jquery/*",
-				"/vendor/bootstrap/js/*",
+				"/vendor/*",
 				"/registrar",
 				"/rol/agregar",
 				"/api/v1/*")
@@ -51,12 +49,12 @@ public class SecurityConfiguration {
 						.loginProcessingUrl("/loginprocess")
 						.usernameParameter("username")
 						.passwordParameter("password")
-						.defaultSuccessUrl("/loginsuccess", true)
+						.defaultSuccessUrl("/home", true)
+						.failureUrl("/login?error=true")
 						.permitAll())
 				
-				
 				.logout(logout -> logout.logoutUrl("/logout")
-						.logoutSuccessUrl("/login?logout")
+						.logoutSuccessUrl("/login?logout=true")
 						.permitAll());
 
 		return http.build();

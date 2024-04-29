@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.unla.proyectooo2.helpers.ViewRouteHelper;
 
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	
 	@GetMapping("")
 	public String admin() {
 		
