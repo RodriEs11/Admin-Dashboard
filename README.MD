@@ -1,4 +1,4 @@
-# Inicio rápdio para Clonar y Ejecutar el Proyecto en Spring Tool Suite (STS)
+# Inicio rápido para clonar y ejecutar el proyecto en Spring Tool Suite (STS)
 
 Bienvenido/a al proyecto. Este documento te guiará para clonar el repositorio desde GitHub y ejecutar el proyecto utilizando Spring Tool Suite (STS).
 
@@ -10,12 +10,11 @@ Bienvenido/a al proyecto. Este documento te guiará para clonar el repositorio d
 - Tener una base de datos MySql Server
 
 ## Clonando el Repositorio
-1. Ejecuta el siguiente comando para clonar el repositorio:
+ Ejecuta el siguiente comando para clonar el repositorio:
 
    ```bash
    git clone https://github.com/RodriEs11/Admin-Dashboard.git
 
-2. Importa el proyecto en STS
 
 ## Variables de entorno
 
