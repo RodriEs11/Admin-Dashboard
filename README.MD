@@ -9,12 +9,14 @@ Bienvenido/a al proyecto. Este documento te guiará para clonar el repositorio d
 - Asegúrate de que STS tiene soporte para proyectos Maven.
 - Tener una base de datos MySql Server
 
+
 ## Clonando el Repositorio
- Ejecuta el siguiente comando para clonar el repositorio:
+ Ejecuta el siguiente comando para clonar el repositorio:  
 
-   ```bash
+```bash
    git clone https://github.com/RodriEs11/Admin-Dashboard.git
-
+```
+    
 
 ## Variables de entorno
 
